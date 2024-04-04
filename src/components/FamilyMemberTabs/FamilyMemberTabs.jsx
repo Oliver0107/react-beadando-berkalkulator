@@ -13,7 +13,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
 
   const handleAddPerson = () => {
     const personData = { name: `${pCounter + 1}. ember`, salary: 0 };
-
+    handleTabChange(pCounter);
     onAddPerson(personData);
   };
   const handleTabChange = (activeTab) => {
