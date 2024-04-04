@@ -12,7 +12,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
   }, [activeTab]);
 
   const handleAddPerson = () => {
-    const personData = { name: `${pCounter + 1}. ember`, salary: 0 };
+    const personData = { id: `${pCounter}`, name: `${pCounter + 1}. ember`, salary: 0, szjaMentes: false, marry: false, taxDiscount: false, familyDiscount: false };
     handleTabChange(pCounter);
     onAddPerson(personData);
   };
@@ -32,7 +32,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
           <TabsTrigger value="add" className="p-0 "><Button className="m-0 rounded-sm" onClick={handleAddPerson}>Add</Button></TabsTrigger>
         </TabsList>
         {people.map((person, index) => {
-          return <TabsContent key={index} value={index}><SalaryCalculator person={person.name} activeTab={index} /></TabsContent>
+          return <TabsContent key={index} value={index}><SalaryCalculator personId={person.id} activeTab={index} /></TabsContent>
         })}
       </Tabs>
     </div>

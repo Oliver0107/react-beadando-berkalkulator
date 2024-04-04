@@ -1,6 +1,13 @@
-const SalaryCalculator = ({ person, activeTab }) => {
+
+import React from 'react';
+
+const SalaryCalculator = ({ activeTab,fPerson }) => {
   const tabId = activeTab;
-  return <div className="bg-yellow-500">{tabId}{person}</div>;
+  console.log(activeTab);
+  const person =fPerson(activeTab);
+  console.log(person);
+
+  return <div className="bg-yellow-500">{person.name}</div>;
 };
 
 export default SalaryCalculator;

@@ -5,13 +5,17 @@ import { useState } from "react";
 
 const HouseholdSalaryCalculator = () => {
   const [people, setPeople] = useState([]);
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(-1);
 
   const addPerson = (newPerson) => {
     setPeople(prevPeople => [...prevPeople, newPerson]);
   };
   const tabChange = (tabIndex) => {
     setActiveTab(tabIndex);
+  };
+  const findPerson = () => {
+ 
+    return people[activeTab];
   };
 
 
@@ -27,10 +31,14 @@ const HouseholdSalaryCalculator = () => {
         />
       </header>
       <main className="grid w-full grid-cols-2 gap-10">
-        <SalaryCalculator
-          people={people}
-          activeTab={activeTab}
-        />
+        {activeTab > -1 ? (
+          <SalaryCalculator
+            activeTab={activeTab}
+            fPerson={findPerson}
+          />
+        ) : (
+          <div>There is no people in the household</div>
+        )}
         <HouseholdSummary />
       </main>
     </div>
