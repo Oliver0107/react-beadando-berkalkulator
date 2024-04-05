@@ -12,7 +12,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
   }, [activeTab]);
 
   const handleAddPerson = () => {
-    const personData = { id: `${pCounter}`, name: `${pCounter + 1}. ember`, salary: 0, szjaMentes: false, marry: false, taxDiscount: false, familyDiscount: false };
+    const personData = { id: `${pCounter}`, name: `${pCounter + 1}. ember`, BBer: 0, NBer: 0, szjaMentes: false, marry: false, taxDiscount: false, familyDiscount: false };
     handleTabChange(pCounter);
     onAddPerson(personData);
   };
@@ -22,9 +22,11 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
 
 
 
+
+
   return (
     <div>
-      <Tabs value={active} className="w-[800px] bg-red-500">
+      <Tabs value={active} className="w-full bg-red-500">
         <TabsList className="flex justify-start gap-3 bg-transparent">
           {people.map((person, index) => {
             return <TabsTrigger key={index} value={index} className="p-0 "><Button className="m-0 rounded-sm" onClick={() => handleTabChange(index)}>{person.name}</Button></TabsTrigger>
@@ -32,7 +34,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
           <TabsTrigger value="add" className="p-0 "><Button className="m-0 rounded-sm" onClick={handleAddPerson}>Add</Button></TabsTrigger>
         </TabsList>
         {people.map((person, index) => {
-          return <TabsContent key={index} value={index}><SalaryCalculator personId={person.id} activeTab={index} /></TabsContent>
+          return <TabsContent key={index} value={index} className="m-0 p-0"><SalaryCalculator personId={person.id} activeTab={index} /></TabsContent>
         })}
       </Tabs>
     </div>
