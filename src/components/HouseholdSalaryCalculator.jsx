@@ -27,7 +27,6 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonBBer = (personId, data) => {
     people[personId].BBer = data;
-    updatePersonNBer(personId, data);
   };
 
   const updatePersonNBer = (personId, data) => {
