@@ -36,16 +36,22 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   };
   const changeBBer = (e) => {
     setBBer(Math.floor(e.target.value));
+    setNBer(Math.floor(e.target.value) - (Math.floor(e.target.value) * 0.335));
+
     setSliderValue(Math.floor(e.target.value) / 5000);
+
     cBBer(person.id, Math.floor(e.target.value));
     cNBer(person.id, Math.floor(e.target.value));
   };
 
   const sliderChange = (e) => {
     setSliderValue(e);
+
     setBBer(e * 5000);
+    setNBer(e * 5000 - (e * 5000 * 0.335));
+
     cBBer(person.id, e * 5000);
-    console.log(e);
+    cNBer(person.id, e * 5000);
   };
 
   const increaseBBer = (percentage) => {
