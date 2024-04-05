@@ -5,11 +5,12 @@ import { Slider } from '../ui/slider';
 import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 
-const SalaryCalculator = ({ person, cName, cBBer, szjaC, marryC, taxDiscountC, familyDiscountC }) => {
+const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDiscountC, familyDiscountC }) => {
   if (!person) return null;
 
   const [name, setName] = useState(person.name);
   const [BBer, setBBer] = useState(person.BBer);
+  const [sliderValue, setSliderValue] = useState(person.BBer / 5000);
   const [NBer, setNBer] = useState(person.NBer);
   const [szjaMentes, setSzjaMentes] = useState(person.szjaMentes);
   const [marry, setMarry] = useState(person.marry);
@@ -20,20 +21,49 @@ const SalaryCalculator = ({ person, cName, cBBer, szjaC, marryC, taxDiscountC, f
     setName(person.name);
     setBBer(person.BBer);
     setNBer(person.NBer);
+    setSliderValue(person.BBer / 5000);
     setSzjaMentes(person.szjaMentes);
     setMarry(person.marry);
     setTaxDiscount(person.taxDiscount);
     setFamilyDiscount(person.familyDiscount);
+
   }, [person]);
-  console.log(person.name);
+  console.log(person.BBer);
 
   const changeName = (e) => {
     setName(e.target.value);
     cName(person.id, e.target.value);
   };
   const changeBBer = (e) => {
-    setBBer(e.target.value);
-    cBBer(person.id, e.target.value);
+    setBBer(Math.floor(e.target.value));
+    setSliderValue(Math.floor(e.target.value) / 5000);
+    cBBer(person.id, Math.floor(e.target.value));
+    cNBer(person.id, Math.floor(e.target.value));
+  };
+
+  const sliderChange = (e) => {
+    setSliderValue(e);
+    setBBer(e * 5000);
+    cBBer(person.id, e * 5000);
+    console.log(e);
+  };
+
+  const increaseBBer = (percentage) => {
+    setBBer((currentBBer) => {
+      const newBBer = currentBBer * (1 + percentage / 100);
+      cBBer(person.id, Math.round(newBBer));
+      return Math.floor(newBBer);
+    });
+    setSliderValue(person.BBer / 5000);
+  };
+
+  const decreaseBBer = (percentage) => {
+    setBBer((currentBBer) => {
+      const newBBer = currentBBer * (1 - percentage / 100);
+      cBBer(person.id, Math.floor(newBBer));
+      return Math.floor(newBBer);
+    });
+    setSliderValue(person.BBer / 5000);
   };
 
   const szjaChange = (e) => {
@@ -54,8 +84,6 @@ const SalaryCalculator = ({ person, cName, cBBer, szjaC, marryC, taxDiscountC, f
 
   };
 
-
-
   return <div className="bg-yellow-500 p-0 m-0">
     <h1>{name} bérének kiszámítása</h1>
     <div className="grid w-full max-w-sm items-center gap-1.5 mb-9">
@@ -68,12 +96,12 @@ const SalaryCalculator = ({ person, cName, cBBer, szjaC, marryC, taxDiscountC, f
       <Input label="Bér" type="number" min="0" value={BBer} onChange={(e) => changeBBer(e)} />
       <Label >Add meg a bruttó béredet!</Label>
     </div>
-    <Slider defaultValue={[50]} max={100} step={1} className="mt-10 mb-10 w-96" />
+    <Slider value={[sliderValue]} max={100} step={1} onValueChange={(e) => sliderChange(e[0])} className="mt-10 mb-10 w-96" />
     <div>
-      <Button>-1%</Button>
-      <Button>-5%</Button>
-      <Button>+1%</Button>
-      <Button>+5%</Button>
+      <Button onClick={() => decreaseBBer(1)}>-1%</Button>
+      <Button onClick={() => decreaseBBer(5)}>-5%</Button>
+      <Button onClick={() => increaseBBer(1)}>+1%</Button>
+      <Button onClick={() => increaseBBer(5)}>+5%</Button>
     </div>
 
     <div>
@@ -118,9 +146,6 @@ const SalaryCalculator = ({ person, cName, cBBer, szjaC, marryC, taxDiscountC, f
         <p>Nettó bér: {NBer} Ft</p>
       </div>
     </div>
-
-
-
   </div>;
 };
 
