@@ -57,6 +57,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   const increaseBBer = (percentage) => {
     setBBer((currentBBer) => {
       const newBBer = currentBBer * (1 + percentage / 100);
+      setNBer(Math.round(newBBer - (newBBer * 0.335)));
+      cNBer(person.id, Math.round(newBBer));
       cBBer(person.id, Math.round(newBBer));
       return Math.floor(newBBer);
     });
@@ -66,6 +68,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   const decreaseBBer = (percentage) => {
     setBBer((currentBBer) => {
       const newBBer = currentBBer * (1 - percentage / 100);
+      setNBer(Math.round(newBBer - (newBBer * 0.335)));
+      cNBer(person.id, Math.round(newBBer));
       cBBer(person.id, Math.floor(newBBer));
       return Math.floor(newBBer);
     });
@@ -75,14 +79,18 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   const szjaChange = (e) => {
     setSzjaMentes(e);
     szjaC(person.id, e);
+    setNBer(person.NBer);
   };
   const marryChange = (e) => {
     setMarry(e);
     marryC(person.id, e);
+
   };
   const taxDiscountChange = (e) => {
     setTaxDiscount(e);
     taxDiscountC(person.id, e);
+    console.log(person.NBer);
+    setNBer(person.NBer);
   };
   const familyDiscountChange = (e) => {
     setFamilyDiscount(e);
