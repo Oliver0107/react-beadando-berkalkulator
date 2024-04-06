@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { differenceInDays, differenceInMonths } from 'date-fns';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
@@ -7,7 +6,6 @@ import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 import  DialogDemo  from '../DatePickerModal';
 import { CirclePlus, CircleMinus } from 'lucide-react';
-import { set } from 'date-fns';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDateC,mJogosultC, taxDiscountC, familyDiscountC }) => {
   if (!person) return null;
@@ -18,7 +16,6 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
   const [NBer, setNBer] = useState(person.NBer);
   const [szjaMentes, setSzjaMentes] = useState(person.szjaMentes);
   const [marry, setMarry] = useState(person.marry);
-  const [date, setDate] = useState(person.mDate);
   const [jogosult, setJogosult] = useState(person.mJogosult);
   const [taxDiscount, setTaxDiscount] = useState(person.taxDiscount);
   const [familyDiscount, setFamilyDiscount] = useState(person.familyDiscount);
@@ -96,14 +93,9 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
     const pickedDate = new Date(e);
 
       const differenceInMilliseconds = now.getTime() - pickedDate.getTime();
-
-      // A milliszekundumok átszámítása napokká
       const differenceInDays = Math.floor( differenceInMilliseconds / (1000 * 60 * 60 * 24));
-      
-      const totalMonths = differenceInDays;
-      console.log("Osszes honap: ",totalMonths);
     
-      if(totalMonths < 2*365 && totalMonths > 30){
+      if(differenceInDays < 2*365 && differenceInDays > 30){
         marryC(person.id, true);
         setNBer(person.NBer);
         setJogosult(true);
@@ -112,10 +104,10 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
       }else{
         if(person.mJogosult == true){
           marryC(person.id, false);
-        setNBer(person.NBer);
-        setJogosult(false);
-        mJogosultC(person.id, false);
-        marryDateC(person.id, e);
+          setNBer(person.NBer);
+          setJogosult(false);
+          mJogosultC(person.id, false);
+          marryDateC(person.id, e);
         }else{
           if(jogosult){
             marryC(person.id, false);
@@ -128,7 +120,6 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
       } 
     
   };
-
 
   const marryChange = (e) => {
     setMarry(e);
