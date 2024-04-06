@@ -74,6 +74,14 @@ const HouseholdSalaryCalculator = () => {
     }
   };
 
+  const updatePersonMarryDate = (personId, data) => {
+    people[personId].mDate = data;
+  };
+
+  const updatePersonMarryJogosult = (personId, data) => {
+    people[personId].mJogosult = data;
+  };
+
   const updatePersonTaxDiscount = (personId, data) => {
     people[personId].taxDiscount = data;
     if(data){
@@ -126,6 +134,8 @@ const HouseholdSalaryCalculator = () => {
             cNBer={updatePersonNBer}
             szjaC={updatePersonSzja}
             marryC={updatePersonMarry}
+            marryDateC={updatePersonMarryDate}
+            mJogosultC={updatePersonMarryJogosult}
             taxDiscountC={updatePersonTaxDiscount}
             familyDiscountC={updatePersonFamilyDiscount}
 

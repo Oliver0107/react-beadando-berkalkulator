@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { differenceInDays, differenceInMonths } from 'date-fns';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
 import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 import  DialogDemo  from '../DatePickerModal';
+import { CirclePlus, CircleMinus } from 'lucide-react';
+import { set } from 'date-fns';
 
-const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDiscountC, familyDiscountC }) => {
+const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDateC,mJogosultC, taxDiscountC, familyDiscountC }) => {
   if (!person) return null;
 
   const [name, setName] = useState(person.name);
@@ -15,8 +18,11 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   const [NBer, setNBer] = useState(person.NBer);
   const [szjaMentes, setSzjaMentes] = useState(person.szjaMentes);
   const [marry, setMarry] = useState(person.marry);
+  const [date, setDate] = useState(person.mDate);
+  const [jogosult, setJogosult] = useState(person.mJogosult);
   const [taxDiscount, setTaxDiscount] = useState(person.taxDiscount);
   const [familyDiscount, setFamilyDiscount] = useState(person.familyDiscount);
+
 
   useEffect(() => {
     setName(person.name);
@@ -25,11 +31,12 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
     setSliderValue(person.BBer / 5000);
     setSzjaMentes(person.szjaMentes);
     setMarry(person.marry);
+    setDate(person.mDate);
+    setJogosult(person.mJogosult);
     setTaxDiscount(person.taxDiscount);
     setFamilyDiscount(person.familyDiscount);
 
   }, [person]);
-  console.log(person.BBer);
 
   const changeName = (e) => {
     setName(e.target.value);
@@ -82,12 +89,64 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
     szjaC(person.id, e);
     setNBer(person.NBer);
   };
+
+  const dateChange = (e) => {
+    setDate(e);
+    const now = new Date();
+    const pickedDate = new Date(e);
+
+      const differenceInMilliseconds = now.getTime() - pickedDate.getTime();
+
+      // A milliszekundumok átszámítása napokká
+      const differenceInDays = Math.floor( differenceInMilliseconds / (1000 * 60 * 60 * 24));
+      
+      const totalMonths = differenceInDays;
+      console.log("Osszes honap: ",totalMonths);
+    
+      if(totalMonths < 2*365 && totalMonths > 30){
+        marryC(person.id, true);
+        setNBer(person.NBer);
+        setJogosult(true);
+        mJogosultC(person.id, true);
+        marryDateC(person.id, e);
+      }else{
+        if(person.mJogosult == true){
+          marryC(person.id, false);
+        setNBer(person.NBer);
+        setJogosult(false);
+        mJogosultC(person.id, false);
+        marryDateC(person.id, e);
+        }else{
+          if(jogosult){
+            marryC(person.id, false);
+            setNBer(person.NBer);
+          }
+          setJogosult(false);
+          mJogosultC(person.id, false);
+        }
+
+      } 
+    
+  };
+
+
   const marryChange = (e) => {
     setMarry(e);
-    marryC(person.id, e);
-    setNBer(person.NBer);
+    if(!e){
 
+      marryDateC(person.id, null);
+      if(person.mJogosult == true){
+        console.log("nem jogosult");
+      marryC(person.id, e);
+      setNBer(person.NBer);
+      
+
+      }
+      setJogosult(null);
+      mJogosultC(person.id, null);
+    }
   };
+
   const taxDiscountChange = (e) => {
     setTaxDiscount(e);
     taxDiscountC(person.id, e);
@@ -137,8 +196,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
           onCheckedChange={(checked) => marryChange(checked)}
         />
         <Label>Friss házasok kedvezménye</Label>
-        {marry && <DialogDemo />}
-        
+        {marry && <DialogDemo gDate={dateChange}/>}
+        {jogosult != null && marry && (jogosult ? <p>Jogosult vagy a kedvezményre!</p> : <p>Nem vagy jogosult a kedvezményre!</p>)}
       </div>
       <div className="flex items-center space-x-2">
         <Switch
@@ -155,6 +214,18 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
           onCheckedChange={(checked) => familyDiscountChange(checked)}
         />
         <Label >Családi kedvezmény</Label>
+        <div>
+          <div>
+          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon">
+            <CirclePlus className="h-full w-full" />
+          </Button>
+          <p></p>
+          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon">
+          <CircleMinus  className="h-full w-full"/>
+          </Button>
+
+          </div>
+        </div>
       </div>
     </div>
 

@@ -10,8 +10,21 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { DatePicker } from "./DatePicker"
+import { DialogClose } from "@radix-ui/react-dialog"
 
-const DatePickerModal = () => {
+const DatePickerModal = ({gDate}) => {
+    const [date, setDate] = useState(new Date());
+    const dateChange = (e) => {
+        setDate(e);
+    
+    }
+
+    const getDate = () => {
+        gDate(date);
+    };
+    
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -29,25 +42,15 @@ const DatePickerModal = () => {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
+            <DatePicker dChange={dateChange}/>
+           
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+            <DialogClose>
+            <Button type="submit" onClick={()=>{getDate()}}>Mentés</Button>
+            </DialogClose>
+          
         </DialogFooter>
       </DialogContent>
     </Dialog>

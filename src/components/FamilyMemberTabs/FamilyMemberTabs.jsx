@@ -12,7 +12,13 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
   }, [activeTab]);
 
   const handleAddPerson = () => {
-    const personData = { id: `${pCounter}`, name: `${pCounter + 1}. ember`, BBer: 0, NBer: 0, szjaMentes: false, marry: false, taxDiscount: false, familyDiscount: false };
+    const personData = { id: `${pCounter}`, 
+    name: `${pCounter + 1}. ember`, 
+    BBer: 0, NBer: 0, 
+    szjaMentes: false, 
+    marry: false, mdate: null, mJogosult: null,
+    taxDiscount: false, 
+    familyDiscount: false };
     handleTabChange(pCounter);
     onAddPerson(personData);
   };
