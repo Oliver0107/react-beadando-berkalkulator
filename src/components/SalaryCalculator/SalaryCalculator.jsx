@@ -4,6 +4,7 @@ import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
 import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
+import  DialogDemo  from '../DatePickerModal';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDiscountC, familyDiscountC }) => {
   if (!person) return null;
@@ -84,6 +85,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
   const marryChange = (e) => {
     setMarry(e);
     marryC(person.id, e);
+    setNBer(person.NBer);
 
   };
   const taxDiscountChange = (e) => {
@@ -135,6 +137,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, taxDisco
           onCheckedChange={(checked) => marryChange(checked)}
         />
         <Label>Friss házasok kedvezménye</Label>
+        {marry && <DialogDemo />}
+        
       </div>
       <div className="flex items-center space-x-2">
         <Switch
