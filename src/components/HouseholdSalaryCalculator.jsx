@@ -34,41 +34,82 @@ const HouseholdSalaryCalculator = () => {
   };
   const updatePersonSzja = (personId, data) => {
     people[personId].szjaMentes = data;
-    if(data){
-      
-      if(people[personId].BBer < 499952){
+    if (data) {
+
+      if (people[personId].BBer < 499952) {
         people[personId].NBer = Math.floor(people[personId].BBer - (people[personId].BBer * 0.185));
-      }else{
+      } else {
         people[personId].NBer = Math.floor(people[personId].BBer - (people[personId].BBer * 0.185));
-        people[personId].NBer += Math.floor((people[personId].BBer - 499952)*0.15);
+        people[personId].NBer += Math.floor((people[personId].BBer - 499952) * 0.15);
       }
-      if(people[personId].marry){
+      if (people[personId].marry) {
         people[personId].NBer += 5000;
       }
-      if(people[personId].taxDiscount){
-        updatePersonTaxDiscount(personId,people[personId].taxDiscount);
+      if (people[personId].taxDiscount) {
+        updatePersonTaxDiscount(personId, people[personId].taxDiscount);
       }
-    }else{
-      if(people[personId].marry){
-        updatePersonNBer(personId,people[personId].BBer);
+    } else {
+      if (people[personId].marry) {
+        updatePersonNBer(personId, people[personId].BBer);
         people[personId].NBer += 5000;
-      }else{
+      } else {
         updatePersonNBer(personId, people[personId].BBer);
       }
-      
-      if(people[personId].taxDiscount){
-        updatePersonTaxDiscount(personId,people[personId].taxDiscount);
+
+      if (people[personId].taxDiscount) {
+        updatePersonTaxDiscount(personId, people[personId].taxDiscount);
       }
     }
     setPeople([...people]);
   };
-  
+
+  const addEltartottak = (personId, data) => {
+    people[personId].eltartott = data;
+  };
+
+  const decreaseEltartottak = (personId, data) => {
+    people[personId].eltartott = data;
+  };
+
+  const addKezdemenyNum = (personId, data) => {
+    people[personId].kezdemenyNum = data;
+
+    if (people[personId].szjaMentes) {
+      updatePersonNBer(personId, people[personId].BBer);
+    }
+    if (people[personId].marry) {
+      updatePersonNBer(personId, people[personId].BBer);
+      updatePersonMarry(personId, people[personId].marry);
+    }
+
+
+    if (data == 1) {
+      people[personId].NBer += 10000 * people[personId].eltartott;
+    } else if (data == 2) {
+      people[personId].NBer -= 10000 * people[personId].eltartott;
+      people[personId].NBer += 20000 * people[personId].eltartott;
+    } else if (data == 3) {
+      people[personId].NBer -= 20000 * people[personId].eltartott;
+      people[personId].NBer += 33000 * people[personId].eltartott;
+    }
+  };
+
+  const decreaseKezdemenyNum = (personId, data) => {
+    people[personId].kezdemenyNum = data;
+    if (data == 0) {
+      people[personId].NBer -= 33000 * people[personId].eltartott;
+    } else if (data == 1) {
+      people[personId].NBer -= 10000 * people[personId].eltartott;
+    } else if (data === 2) {
+      people[personId].NBer -= 20000 * people[personId].eltartott;
+    }
+  };
 
   const updatePersonMarry = (personId, data) => {
     people[personId].marry = data;
-    if(data){
+    if (data) {
       people[personId].NBer += 5000;
-    }else{
+    } else {
 
       people[personId].NBer -= 5000;
     }
@@ -84,30 +125,30 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonTaxDiscount = (personId, data) => {
     people[personId].taxDiscount = data;
-    if(data){
+    if (data) {
 
-      if((people[personId].BBer - people[personId].NBer) <= 77300){
-      people[personId].NBer = people[personId].BBer;
-    }else{
-      people[personId].NBer += 77300;
-    }
-  }else{
-    if(people[personId].marry){
-      updatePersonNBer(personId,people[personId].BBer);
-      people[personId].NBer += 5000;
-      
-      
-    }
-    if(people[personId].szjaMentes){
-      updatePersonSzja(personId,people[personId].szjaMentes);
-    }else{
-      if(!people[personId].marry){
-        updatePersonNBer(personId,people[personId].BBer);
+      if ((people[personId].BBer - people[personId].NBer) <= 77300) {
+        people[personId].NBer = people[personId].BBer;
+      } else {
+        people[personId].NBer += 77300;
       }
+    } else {
+      if (people[personId].marry) {
+        updatePersonNBer(personId, people[personId].BBer);
+        people[personId].NBer += 5000;
+
+
+      }
+      if (people[personId].szjaMentes) {
+        updatePersonSzja(personId, people[personId].szjaMentes);
+      } else {
+        if (!people[personId].marry) {
+          updatePersonNBer(personId, people[personId].BBer);
+        }
+      }
+
     }
-    
-  }
-  setPeople([...people]);
+    setPeople([...people]);
   };
 
   const updatePersonFamilyDiscount = (personId, data) => {
@@ -138,6 +179,10 @@ const HouseholdSalaryCalculator = () => {
             mJogosultC={updatePersonMarryJogosult}
             taxDiscountC={updatePersonTaxDiscount}
             familyDiscountC={updatePersonFamilyDiscount}
+            aEltartottak={addEltartottak}
+            dEltartottak={decreaseEltartottak}
+            aKedvezmeny={addKezdemenyNum}
+            dKedvezmeny={decreaseKezdemenyNum}
 
           />
         ) : (

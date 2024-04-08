@@ -4,10 +4,12 @@ import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
 import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
-import  DialogDemo  from '../DatePickerModal';
+import { Badge } from '../ui/badge';
+import DialogDemo from '../DatePickerModal';
 import { CirclePlus, CircleMinus } from 'lucide-react';
+import { set } from 'date-fns';
 
-const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDateC,mJogosultC, taxDiscountC, familyDiscountC }) => {
+const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
   if (!person) return null;
 
   const [name, setName] = useState(person.name);
@@ -16,9 +18,15 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
   const [NBer, setNBer] = useState(person.NBer);
   const [szjaMentes, setSzjaMentes] = useState(person.szjaMentes);
   const [marry, setMarry] = useState(person.marry);
+  const [date, setDate] = useState(person.mDate);
   const [jogosult, setJogosult] = useState(person.mJogosult);
   const [taxDiscount, setTaxDiscount] = useState(person.taxDiscount);
   const [familyDiscount, setFamilyDiscount] = useState(person.familyDiscount);
+
+  const [eltartottak, setEltartottak] = useState(person.eltartott);
+  const [kedvezmeny, setKedvezmenyNum] = useState(person.kedvezmenyNum);
+
+
 
 
   useEffect(() => {
@@ -32,6 +40,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
     setJogosult(person.mJogosult);
     setTaxDiscount(person.taxDiscount);
     setFamilyDiscount(person.familyDiscount);
+    setEltartottak(person.eltartott);
+    setKedvezmenyNum(person.kedvezmenyNum);
 
   }, [person]);
 
@@ -92,45 +102,45 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
     const now = new Date();
     const pickedDate = new Date(e);
 
-      const differenceInMilliseconds = now.getTime() - pickedDate.getTime();
-      const differenceInDays = Math.floor( differenceInMilliseconds / (1000 * 60 * 60 * 24));
-    
-      if(differenceInDays < 2*365 && differenceInDays > 30){
-        marryC(person.id, true);
+    const differenceInMilliseconds = now.getTime() - pickedDate.getTime();
+    const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+
+    if (differenceInDays < 2 * 365 && differenceInDays > 30) {
+      marryC(person.id, true);
+      setNBer(person.NBer);
+      setJogosult(true);
+      mJogosultC(person.id, true);
+      marryDateC(person.id, e);
+    } else {
+      if (person.mJogosult == true) {
+        marryC(person.id, false);
         setNBer(person.NBer);
-        setJogosult(true);
-        mJogosultC(person.id, true);
+        setJogosult(false);
+        mJogosultC(person.id, false);
         marryDateC(person.id, e);
-      }else{
-        if(person.mJogosult == true){
+      } else {
+        if (jogosult) {
           marryC(person.id, false);
           setNBer(person.NBer);
-          setJogosult(false);
-          mJogosultC(person.id, false);
-          marryDateC(person.id, e);
-        }else{
-          if(jogosult){
-            marryC(person.id, false);
-            setNBer(person.NBer);
-          }
-          setJogosult(false);
-          mJogosultC(person.id, false);
         }
+        setJogosult(false);
+        mJogosultC(person.id, false);
+      }
 
-      } 
-    
+    }
+
   };
 
   const marryChange = (e) => {
     setMarry(e);
-    if(!e){
+    if (!e) {
 
       marryDateC(person.id, null);
-      if(person.mJogosult == true){
+      if (person.mJogosult == true) {
         console.log("nem jogosult");
-      marryC(person.id, e);
-      setNBer(person.NBer);
-      
+        marryC(person.id, e);
+        setNBer(person.NBer);
+
 
       }
       setJogosult(null);
@@ -141,13 +151,55 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
   const taxDiscountChange = (e) => {
     setTaxDiscount(e);
     taxDiscountC(person.id, e);
-    console.log(person.NBer);
     setNBer(person.NBer);
   };
   const familyDiscountChange = (e) => {
     setFamilyDiscount(e);
     familyDiscountC(person.id, e);
+    setNBer(person.NBer);
 
+  };
+
+  const addEltartott = () => {
+    setEltartottak((current) => {
+      const newEltartott = current + 1;
+      aEltartottak(person.id, newEltartott);
+      return newEltartott;
+    });
+  };
+
+  const decreaseEltartott = () => {
+    if (eltartottak > 0) {
+      setEltartottak((current) => {
+        const newEltartott = current - 1;
+        dEltartottak(person.id, newEltartott);
+        return newEltartott;
+      });
+    }
+
+  };
+
+  const addKedvezmeny = () => {
+    const maxKedvezmeny = Math.min(eltartottak, 3);
+    if (kedvezmeny < maxKedvezmeny) {
+      setKedvezmenyNum((current) => {
+        const newKezdemeny = current + 1;
+        aKedvezmeny(person.id, newKezdemeny);
+        setNBer(person.NBer);
+        return newKezdemeny;
+      });
+    }
+  };
+
+  const decreaseKedvezmeny = () => {
+    if (kedvezmeny > 0) {
+      setKedvezmenyNum((current) => {
+        const newKezdemeny = current - 1;
+        dKedvezmeny(person.id, newKezdemeny);
+        setNBer(person.NBer);
+        return newKezdemeny;
+      });
+    }
   };
 
   return <div className="bg-yellow-500 p-0 m-0">
@@ -187,8 +239,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
           onCheckedChange={(checked) => marryChange(checked)}
         />
         <Label>Friss házasok kedvezménye</Label>
-        {marry && <DialogDemo gDate={dateChange}/>}
-        {jogosult != null && marry && (jogosult ? <p>Jogosult vagy a kedvezményre!</p> : <p>Nem vagy jogosult a kedvezményre!</p>)}
+        {marry && <DialogDemo gDate={dateChange} />}
+        {jogosult != null && marry && (jogosult ? <Badge className="bg-green-600 pointer-events-none">Jogosult</Badge> : <Badge className="bg-red-600 pointer-events-none">Nem jogosult</Badge>)}
       </div>
       <div className="flex items-center space-x-2">
         <Switch
@@ -205,18 +257,25 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
           onCheckedChange={(checked) => familyDiscountChange(checked)}
         />
         <Label >Családi kedvezmény</Label>
-        <div>
+        {familyDiscount && <div>
           <div>
-          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon">
+            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addEltartott() }}>
+              <CirclePlus className="h-full w-full" />
+            </Button>
+            <p>{eltartottak}</p>
+            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseEltartott() }}>
+              <CircleMinus className="h-full w-full" />
+            </Button>
+          </div>
+          <p>Eltartottak, ebből kedvezményesek</p>
+          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addKedvezmeny() }}>
             <CirclePlus className="h-full w-full" />
           </Button>
-          <p></p>
-          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon">
-          <CircleMinus  className="h-full w-full"/>
+          <p>{kedvezmeny}</p>
+          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseKedvezmeny() }}>
+            <CircleMinus className="h-full w-full" />
           </Button>
-
-          </div>
-        </div>
+        </div>}
       </div>
     </div>
 
@@ -226,7 +285,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC,marryDate
         <p>Nettó bér: {NBer} Ft</p>
       </div>
     </div>
-  </div>;
+  </div >;
 };
 
 export default SalaryCalculator;
