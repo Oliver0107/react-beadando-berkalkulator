@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import FamilyMemberTabs from "./FamilyMemberTabs/FamilyMemberTabs";
 import HouseholdSummary from "./HouseholdSummary/HouseholdSummary";
 import SalaryCalculator from "./SalaryCalculator/SalaryCalculator";
@@ -64,24 +65,49 @@ const HouseholdSalaryCalculator = () => {
   };
 
   const addEltartottak = (personId, data) => {
+    if (people[personId].kezdemenyNum == 1) {
+      people[personId].NBer -= 10000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 2) {
+      people[personId].NBer -= 20000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 3) {
+      people[personId].NBer -= 33000 * people[personId].eltartott;
+    }
+
     people[personId].eltartott = data;
+
+    if (people[personId].kezdemenyNum == 1) {
+      people[personId].NBer += 10000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 2) {
+      people[personId].NBer += 20000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 3) {
+      people[personId].NBer += 33000 * people[personId].eltartott;
+    }
   };
 
   const decreaseEltartottak = (personId, data) => {
+    if (people[personId].kezdemenyNum == 1) {
+      people[personId].NBer -= 10000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 2) {
+      people[personId].NBer -= 20000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 3) {
+      people[personId].NBer -= 33000 * people[personId].eltartott;
+    }
+
     people[personId].eltartott = data;
+
+    if (people[personId].kezdemenyNum == 1) {
+      people[personId].NBer += 10000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 2) {
+      people[personId].NBer += 20000 * people[personId].eltartott;
+    } else if (people[personId].kezdemenyNum == 3) {
+      people[personId].NBer += 33000 * people[personId].eltartott;
+    }
+
+    console.log(people[personId].eltartott, people[personId].kezdemenyNum);
   };
 
-  const addKezdemenyNum = (personId, data) => {
+  const addKedvezmenyNum = (personId, data) => {
     people[personId].kezdemenyNum = data;
-
-    if (people[personId].szjaMentes) {
-      updatePersonNBer(personId, people[personId].BBer);
-    }
-    if (people[personId].marry) {
-      updatePersonNBer(personId, people[personId].BBer);
-      updatePersonMarry(personId, people[personId].marry);
-    }
-
 
     if (data == 1) {
       people[personId].NBer += 10000 * people[personId].eltartott;
@@ -94,15 +120,20 @@ const HouseholdSalaryCalculator = () => {
     }
   };
 
-  const decreaseKezdemenyNum = (personId, data) => {
+  const decreaseKedvezmenyNum = (personId, data) => {
     people[personId].kezdemenyNum = data;
-    if (data == 0) {
-      people[personId].NBer -= 33000 * people[personId].eltartott;
-    } else if (data == 1) {
+    const ennyiVolt = people[personId].kezdemenyNum - 1;
+
+    if (ennyiVolt == 0) {
       people[personId].NBer -= 10000 * people[personId].eltartott;
-    } else if (data === 2) {
+    } else if (ennyiVolt == 1) {
       people[personId].NBer -= 20000 * people[personId].eltartott;
+      people[personId].NBer += 10000 * people[personId].eltartott;
+    } else if (ennyiVolt === 2) {
+      people[personId].NBer -= 33000 * people[personId].eltartott;
+      people[personId].NBer += 20000 * people[personId].eltartott;
     }
+    console.log(people[personId].eltartott, people[personId].kezdemenyNum);
   };
 
   const updatePersonMarry = (personId, data) => {
@@ -181,8 +212,8 @@ const HouseholdSalaryCalculator = () => {
             familyDiscountC={updatePersonFamilyDiscount}
             aEltartottak={addEltartottak}
             dEltartottak={decreaseEltartottak}
-            aKedvezmeny={addKezdemenyNum}
-            dKedvezmeny={decreaseKezdemenyNum}
+            aKedvezmeny={addKedvezmenyNum}
+            dKedvezmeny={decreaseKedvezmenyNum}
 
           />
         ) : (

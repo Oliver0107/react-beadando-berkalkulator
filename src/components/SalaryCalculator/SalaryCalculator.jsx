@@ -7,7 +7,6 @@ import { Switch } from '../ui/switch';
 import { Badge } from '../ui/badge';
 import DialogDemo from '../DatePickerModal';
 import { CirclePlus, CircleMinus } from 'lucide-react';
-import { set } from 'date-fns';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
   if (!person) return null;
@@ -164,17 +163,26 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     setEltartottak((current) => {
       const newEltartott = current + 1;
       aEltartottak(person.id, newEltartott);
+      setEltartottak(newEltartott);
+      setNBer(person.NBer);
       return newEltartott;
     });
   };
 
   const decreaseEltartott = () => {
+
     if (eltartottak > 0) {
+
       setEltartottak((current) => {
         const newEltartott = current - 1;
         dEltartottak(person.id, newEltartott);
+        setEltartottak(newEltartott);
+        setNBer(person.NBer);
         return newEltartott;
       });
+      if (eltartottak <= kedvezmeny) {
+        decreaseKedvezmeny();
+      }
     }
 
   };
@@ -185,6 +193,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
       setKedvezmenyNum((current) => {
         const newKezdemeny = current + 1;
         aKedvezmeny(person.id, newKezdemeny);
+        setKedvezmenyNum(newKezdemeny);
         setNBer(person.NBer);
         return newKezdemeny;
       });
@@ -196,6 +205,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
       setKedvezmenyNum((current) => {
         const newKezdemeny = current - 1;
         dKedvezmeny(person.id, newKezdemeny);
+        setKedvezmenyNum(newKezdemeny);
         setNBer(person.NBer);
         return newKezdemeny;
       });
