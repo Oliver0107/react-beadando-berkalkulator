@@ -7,6 +7,7 @@ import { Switch } from '../ui/switch';
 import { Badge } from '../ui/badge';
 import DialogDemo from '../DatePickerModal';
 import { CirclePlus, CircleMinus } from 'lucide-react';
+import { set } from 'date-fns';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
   if (!person) return null;
@@ -154,6 +155,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
   const familyDiscountChange = (e) => {
     setFamilyDiscount(e);
+    setKedvezmenyNum(0);
+    setEltartottak(0);
     familyDiscountC(person.id, e);
     setNBer(person.NBer);
 
