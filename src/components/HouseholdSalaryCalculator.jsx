@@ -64,77 +64,57 @@ const HouseholdSalaryCalculator = () => {
     setPeople([...people]);
   };
 
-  const addEltartottak = (personId, data) => {
-    if (people[personId].kezdemenyNum == 1) {
-      people[personId].NBer -= 10000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 2) {
-      people[personId].NBer -= 20000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 3) {
-      people[personId].NBer -= 33000 * people[personId].eltartott;
+  const adjustEltartottak = (personId, newEltartottak) => {
+    const person = people.find(p => p.id === personId);
+    const oldEltartottak = person.eltartott;
+    const kedvezmenyErtekek = {
+      1: 10000,
+      2: 20000,
+      3: 33000,
+    };
+  
+    // Eltávolítjuk a korábbi kedvezményeket
+    if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
+      person.NBer -= kedvezmenyErtekek[person.kedvezmenyNum] * oldEltartottak;
     }
-
-    people[personId].eltartott = data;
-
-    if (people[personId].kezdemenyNum == 1) {
-      people[personId].NBer += 10000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 2) {
-      people[personId].NBer += 20000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 3) {
-      people[personId].NBer += 33000 * people[personId].eltartott;
+  
+    // Beállítjuk az új eltartottak számát
+    person.eltartott = newEltartottak;
+  
+    // Újra kiszámoljuk a kedvezményeket
+    person.kedvezmenyNum = Math.min(person.kedvezmenyNum, person.eltartott, 3); // Ellenőrizzük, hogy a kedvezményezett szám nem haladja meg az eltartottak számát
+    if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
+      person.NBer += kedvezmenyErtekek[person.kedvezmenyNum] * person.eltartott;
     }
+  
+    setPeople([...people]); // Frissítjük az állapotot
   };
+  
 
-  const decreaseEltartottak = (personId, data) => {
-    if (people[personId].kezdemenyNum == 1) {
-      people[personId].NBer -= 10000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 2) {
-      people[personId].NBer -= 20000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 3) {
-      people[personId].NBer -= 33000 * people[personId].eltartott;
+  const adjustKedvezmenyNum = (personId, newData) => {
+    const person = people.find(p => p.id === personId);
+    const oldData = person.kedvezmenyNum;
+    const kedvezmenyErtekek = {
+      1: 10000,
+      2: 20000,
+      3: 33000,
+    };
+  
+    // Eltávolítjuk a korábbi kedvezményt az előző eltartottak száma alapján
+    if (oldData > 0 && kedvezmenyErtekek[oldData]) {
+      person.NBer -= kedvezmenyErtekek[oldData] * person.eltartott;
     }
-
-    people[personId].eltartott = data;
-
-    if (people[personId].kezdemenyNum == 1) {
-      people[personId].NBer += 10000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 2) {
-      people[personId].NBer += 20000 * people[personId].eltartott;
-    } else if (people[personId].kezdemenyNum == 3) {
-      people[personId].NBer += 33000 * people[personId].eltartott;
+  
+    // Új kedvezmény hozzáadása az új adatok alapján
+    person.kedvezmenyNum = Math.min(newData, person.eltartott, 3); // A legkisebb érték a megengedett maximum
+  
+    if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
+      person.NBer += kedvezmenyErtekek[person.kedvezmenyNum] * person.eltartott;
     }
-
-    console.log(people[personId].eltartott, people[personId].kezdemenyNum);
+  
+    setPeople([...people]); // Frissítjük az állapotot az új értékekkel
   };
-
-  const addKedvezmenyNum = (personId, data) => {
-    people[personId].kezdemenyNum = data;
-
-    if (data == 1) {
-      people[personId].NBer += 10000 * people[personId].eltartott;
-    } else if (data == 2) {
-      people[personId].NBer -= 10000 * people[personId].eltartott;
-      people[personId].NBer += 20000 * people[personId].eltartott;
-    } else if (data == 3) {
-      people[personId].NBer -= 20000 * people[personId].eltartott;
-      people[personId].NBer += 33000 * people[personId].eltartott;
-    }
-  };
-
-  const decreaseKedvezmenyNum = (personId, data) => {
-    people[personId].kezdemenyNum = data;
-    const ennyiVolt = people[personId].kezdemenyNum - 1;
-
-    if (ennyiVolt == 0) {
-      people[personId].NBer -= 10000 * people[personId].eltartott;
-    } else if (ennyiVolt == 1) {
-      people[personId].NBer -= 20000 * people[personId].eltartott;
-      people[personId].NBer += 10000 * people[personId].eltartott;
-    } else if (ennyiVolt === 2) {
-      people[personId].NBer -= 33000 * people[personId].eltartott;
-      people[personId].NBer += 20000 * people[personId].eltartott;
-    }
-    console.log(people[personId].eltartott, people[personId].kezdemenyNum);
-  };
+  
 
   const updatePersonMarry = (personId, data) => {
     people[personId].marry = data;
@@ -210,10 +190,10 @@ const HouseholdSalaryCalculator = () => {
             mJogosultC={updatePersonMarryJogosult}
             taxDiscountC={updatePersonTaxDiscount}
             familyDiscountC={updatePersonFamilyDiscount}
-            aEltartottak={addEltartottak}
-            dEltartottak={decreaseEltartottak}
-            aKedvezmeny={addKedvezmenyNum}
-            dKedvezmeny={decreaseKedvezmenyNum}
+            aEltartottak={adjustEltartottak}
+            
+            aKedvezmeny={adjustKedvezmenyNum}
+           
 
           />
         ) : (

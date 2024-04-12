@@ -175,8 +175,10 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
       setEltartottak((current) => {
         const newEltartott = current - 1;
-        dEltartottak(person.id, newEltartott);
+        aEltartottak(person.id, newEltartott);
+        aKedvezmeny(person.id, person.kedvezmenyNum, newEltartott);
         setEltartottak(newEltartott);
+        
         setNBer(person.NBer);
         return newEltartott;
       });
@@ -192,7 +194,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     if (kedvezmeny < maxKedvezmeny) {
       setKedvezmenyNum((current) => {
         const newKezdemeny = current + 1;
-        aKedvezmeny(person.id, newKezdemeny);
+        aKedvezmeny(person.id, newKezdemeny, person.eltartott);
         setKedvezmenyNum(newKezdemeny);
         setNBer(person.NBer);
         return newKezdemeny;
@@ -204,7 +206,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     if (kedvezmeny > 0) {
       setKedvezmenyNum((current) => {
         const newKezdemeny = current - 1;
-        dKedvezmeny(person.id, newKezdemeny);
+        aKedvezmeny(person.id, newKezdemeny);
         setKedvezmenyNum(newKezdemeny);
         setNBer(person.NBer);
         return newKezdemeny;
