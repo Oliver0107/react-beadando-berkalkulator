@@ -28,6 +28,7 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonBBer = (personId, data) => {
     people[personId].BBer = data;
+    setPeople([...people]);
   };
 
   const updatePersonNBer = (personId, data) => {
@@ -47,14 +48,14 @@ const HouseholdSalaryCalculator = () => {
       console.log(people[personId].eltartott);
       console.log(people[personId].kedvezmenyNum);
 
-      if(people[personId].familyDiscount){
+      if (people[personId].familyDiscount) {
         const kedvezmenyErtekek = {
           1: 10000,
           2: 20000,
           3: 33000,
         };
         people[personId].NBer += kedvezmenyErtekek[people[personId].kedvezmenyNum] * people[personId].eltartott;
-        
+
       }
       if (people[personId].marry) {
         people[personId].NBer += 5000;
@@ -62,7 +63,7 @@ const HouseholdSalaryCalculator = () => {
       if (people[personId].taxDiscount) {
         updatePersonTaxDiscount(personId, people[personId].taxDiscount);
       }
-      
+
     } else {
       if (people[personId].marry) {
         updatePersonNBer(personId, people[personId].BBer);
@@ -74,7 +75,7 @@ const HouseholdSalaryCalculator = () => {
       if (people[personId].taxDiscount) {
         updatePersonTaxDiscount(personId, people[personId].taxDiscount);
       }
-      if(people[personId].familyDiscount){
+      if (people[personId].familyDiscount) {
         updatePersonNBer(personId, people[personId].BBer);
         const kedvezmenyErtekek = {
           1: 10000,
@@ -82,7 +83,7 @@ const HouseholdSalaryCalculator = () => {
           3: 33000,
         };
         people[personId].NBer += kedvezmenyErtekek[people[personId].kedvezmenyNum] * people[personId].eltartott;
-        }
+      }
     }
     setPeople([...people]);
   };
@@ -95,25 +96,25 @@ const HouseholdSalaryCalculator = () => {
       2: 20000,
       3: 33000,
     };
-  
+
     // Eltávolítjuk a korábbi kedvezményeket
 
     if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
       person.NBer -= kedvezmenyErtekek[person.kedvezmenyNum] * oldEltartottak;
     }
-  
+
     // Beállítjuk az új eltartottak számát
     person.eltartott = newEltartottak;
-  
+
     // Újra kiszámoljuk a kedvezményeket
     person.kedvezmenyNum = Math.min(person.kedvezmenyNum, person.eltartott, 3); // Ellenőrizzük, hogy a kedvezményezett szám nem haladja meg az eltartottak számát
     if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
       person.NBer += kedvezmenyErtekek[person.kedvezmenyNum] * person.eltartott;
     }
-  
+
     setPeople([...people]); // Frissítjük az állapotot
   };
-  
+
 
   const adjustKedvezmenyNum = (personId, newData) => {
     const person = people.find(p => p.id === personId);
@@ -123,22 +124,22 @@ const HouseholdSalaryCalculator = () => {
       2: 20000,
       3: 33000,
     };
-  
+
     // Eltávolítjuk a korábbi kedvezményt az előző eltartottak száma alapján
     if (oldData > 0 && kedvezmenyErtekek[oldData]) {
       person.NBer -= kedvezmenyErtekek[oldData] * person.eltartott;
     }
-  
+
     // Új kedvezmény hozzáadása az új adatok alapján
     person.kedvezmenyNum = Math.min(newData, person.eltartott, 3); // A legkisebb érték a megengedett maximum
-  
+
     if (person.kedvezmenyNum > 0 && kedvezmenyErtekek[person.kedvezmenyNum]) {
       person.NBer += kedvezmenyErtekek[person.kedvezmenyNum] * person.eltartott;
     }
-  
+
     setPeople([...people]); // Frissítjük az állapotot az új értékekkel
   };
-  
+
 
   const updatePersonMarry = (personId, data) => {
     people[personId].marry = data;
@@ -168,13 +169,13 @@ const HouseholdSalaryCalculator = () => {
       } else {
         people[personId].NBer += 77300;
       }
-    
+
     } else {
       if (people[personId].marry) {
         updatePersonNBer(personId, people[personId].BBer);
         people[personId].NBer += 5000;
       }
-      
+
       if (people[personId].szjaMentes) {
         updatePersonSzja(personId, people[personId].szjaMentes);
       } else {
@@ -182,7 +183,7 @@ const HouseholdSalaryCalculator = () => {
           updatePersonNBer(personId, people[personId].BBer);
         }
       }
-      if(people[personId].familyDiscount){
+      if (people[personId].familyDiscount) {
         updatePersonNBer(personId, people[personId].BBer);
         const kedvezmenyErtekek = {
           1: 10000,
@@ -228,14 +229,15 @@ const HouseholdSalaryCalculator = () => {
             familyDiscountC={updatePersonFamilyDiscount}
             aEltartottak={adjustEltartottak}
             aKedvezmeny={adjustKedvezmenyNum}
-           
+
 
           />
         ) : (
           <div>There is no people in the household</div>
         )}
-        <HouseholdSummary 
-        people={people}
+        <HouseholdSummary
+          people={people}
+          setActiveTab={setActiveTab}
         />
       </main>
     </div>

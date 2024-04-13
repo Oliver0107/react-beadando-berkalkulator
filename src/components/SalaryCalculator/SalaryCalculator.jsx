@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 import { Badge } from '../ui/badge';
 import DialogDemo from '../DatePickerModal';
-import { CirclePlus, CircleMinus } from 'lucide-react';
+import { CirclePlus, CircleMinus, CaseUpper } from 'lucide-react';
 import { set } from 'date-fns';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
@@ -181,7 +181,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
         aEltartottak(person.id, newEltartott);
         aKedvezmeny(person.id, person.kedvezmenyNum, newEltartott);
         setEltartottak(newEltartott);
-        
+
         setNBer(person.NBer);
         return newEltartott;
       });
@@ -217,35 +217,35 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     }
   };
 
-  return <div className="bg-yellow-500 p-0 m-0">
-    <h1>{name} bérének kiszámítása</h1>
-    <div className="grid w-full max-w-sm items-center gap-1.5 mb-9">
-      <Label >Név</Label>
+  return <div className=" bg-slate-300 rounded-xl p-6 m-0">
+    <h2 className="pb-2 text-2xl font-semibold tracking-tight first:mt-0">{name} BÉRÉNEK KISZÁMÍTÁSA</h2>
+    <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
+      <Label className="font-semibold">Családtag neve</Label>
       <Input label="Név" value={name} onChange={(e) => changeName(e)} />
-      <Label >Add meg a családtag nevét!</Label>
+      <Label className="text-muted-foreground">Add meg a családtag nevét!</Label>
     </div>
     <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label>Bruttó bér</Label>
+      <Label className="font-semibold">Bruttó bér</Label>
       <Input label="Bér" type="number" min="0" value={BBer} onChange={(e) => changeBBer(e)} />
-      <Label >Add meg a bruttó béredet!</Label>
+      <Label className="text-muted-foreground">Add meg a bruttó béredet!</Label>
     </div>
-    <Slider value={[sliderValue]} max={100} step={1} onValueChange={(e) => sliderChange(e[0])} className="mt-10 mb-10 w-96" />
-    <div>
-      <Button onClick={() => decreaseBBer(1)}>-1%</Button>
-      <Button onClick={() => decreaseBBer(5)}>-5%</Button>
-      <Button onClick={() => increaseBBer(1)}>+1%</Button>
-      <Button onClick={() => increaseBBer(5)}>+5%</Button>
+    <Slider value={[sliderValue]} max={100} step={1} onValueChange={(e) => sliderChange(e[0])} className="mt-5 mb-5 w-96" />
+    <div className='w-96 flex justify-center align-middle gap-2'>
+      <Button className="bg-slate-500" onClick={() => decreaseBBer(1)}>-1%</Button>
+      <Button className="bg-slate-500" onClick={() => decreaseBBer(5)}>-5%</Button>
+      <Button className="bg-slate-500" onClick={() => increaseBBer(1)}>+1%</Button>
+      <Button className="bg-slate-500" onClick={() => increaseBBer(5)}>+5%</Button>
     </div>
 
-    <div>
-      <h1>Kedvezmények</h1>
+    <div className='mt-8'>
+      <h1 className='font-semibold'>Kedvezmények</h1>
       <div className="flex items-center space-x-2">
         <Switch
           id="szja"
           checked={szjaMentes}
           onCheckedChange={(checked) => szjaChange(checked)}
         />
-        <Label >25 év alatt SZJA mentes</Label>
+        <Label className='font-semibold'>25 év alatt SZJA mentes</Label>
       </div>
       <div className="flex items-center space-x-2">
         <Switch
@@ -253,7 +253,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
           checked={marry}
           onCheckedChange={(checked) => marryChange(checked)}
         />
-        <Label>Friss házasok kedvezménye</Label>
+        <Label className='font-semibold'>Friss házasok kedvezménye</Label>
         {marry && <DialogDemo gDate={dateChange} />}
         {jogosult != null && marry && (jogosult ? <Badge className="bg-green-600 pointer-events-none">Jogosult</Badge> : <Badge className="bg-red-600 pointer-events-none">Nem jogosult</Badge>)}
       </div>
@@ -263,7 +263,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
           checked={taxDiscount}
           onCheckedChange={(checked) => taxDiscountChange(checked)}
         />
-        <Label >Személyi adókedvezmény</Label>
+        <Label className='font-semibold' >Személyi adókedvezmény</Label>
       </div>
       <div className="flex items-center space-x-2">
         <Switch
@@ -271,7 +271,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
           checked={familyDiscount}
           onCheckedChange={(checked) => familyDiscountChange(checked)}
         />
-        <Label >Családi kedvezmény</Label>
+        <Label className='font-semibold' >Családi kedvezmény</Label>
         {familyDiscount && <div>
           <div>
             <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addEltartott() }}>
@@ -294,10 +294,10 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
       </div>
     </div>
 
-    <div>
-      <h1>Számított nettó bér</h1>
-      <div>
-        <p>Nettó bér: {NBer} Ft</p>
+    <div className='mt-20 w-full flex flex-col items-center'>
+      <h1 className=' font-semibold font-3xl'>Számított nettó bér</h1>
+      <div className=' bg-slate-600 w-fit p-3 rounded-md m-3'>
+        <p className='font-semibold text-white'>Nettó bér: {NBer} Ft</p>
       </div>
     </div>
   </div >;
