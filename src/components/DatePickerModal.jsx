@@ -14,43 +14,44 @@ import { useState } from "react"
 import { DatePicker } from "./DatePicker"
 import { DialogClose } from "@radix-ui/react-dialog"
 
-const DatePickerModal = ({gDate}) => {
-    const [date, setDate] = useState(new Date());
-    const dateChange = (e) => {
-        setDate(e);
-    
-    }
+const DatePickerModal = ({ gDate }) => {
+  const [date, setDate] = useState(new Date());
+  const dateChange = (e) => {
+    setDate(e);
 
-    const getDate = () => {
-        gDate(date);
-    };
-    
+  }
+
+  const getDate = () => {
+    gDate(date);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="h-3 w-40">Edit Profile</Button>
+        <Button className="h-3 w-40 font-semibold text-white">Dátum módosítása</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            A kedvezmény először a házasságkötést követő hónapban vehető igénybe és a házassági életközösség alatt legfeljebb 24 hónapon keresztül jár.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+          <div className="flex flex-col">
+            <Label className=" font-semibold mb-2">
+              Add meg a házasságkötés dátumát:
             </Label>
-            <DatePicker dChange={dateChange}/>
-           
+            <DatePicker dChange={dateChange} />
+            <Label className="mt-2 text-muted-foreground">
+              Például: 2000/10/25
+            </Label>
           </div>
         </div>
         <DialogFooter>
-            <DialogClose>
-            <Button type="submit" onClick={()=>{getDate()}}>Mentés</Button>
-            </DialogClose>
-          
+          <DialogClose >
+            <Button type="submit" onClick={() => { getDate() }}>Mentés</Button>
+          </DialogClose>
+
         </DialogFooter>
       </DialogContent>
     </Dialog>

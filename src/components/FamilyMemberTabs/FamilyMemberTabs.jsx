@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import SalaryCalculator from "../SalaryCalculator/SalaryCalculator";
+import { Plus } from 'lucide-react';
 
 const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
   const [active, setActive] = useState(activeTab);
@@ -29,19 +30,15 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
   const handleTabChange = (activeTab) => {
     onTabChange(activeTab);
   };
-
-
-
-
-
   return (
     <div>
-      <Tabs value={active} className="w-full bg-red-500">
-        <TabsList className="flex justify-start gap-3 bg-transparent">
+      <Tabs value={active} className="w-full">
+        <TabsList className="flex justify-start gap-3 bg-transparent p-0">
           {people.map((person, index) => {
-            return <TabsTrigger key={index} value={index} className="p-0 "><Button className="m-0 rounded-sm" onClick={() => handleTabChange(index)}>{person.name}</Button></TabsTrigger>
+            return <TabsTrigger key={index} value={index} className="p-0 "><Button className="m-0 rounded-sm bg-slate-300 font-semibold text-slate-800 hover:bg-slate-400" onClick={() => handleTabChange(index)}>{person.name}</Button></TabsTrigger>
           })}
-          <TabsTrigger value="add" className="p-0 "><Button className="m-0 rounded-sm" onClick={handleAddPerson}>Add</Button></TabsTrigger>
+          <TabsTrigger value="add" className="p-0 "><Button className="m-0 rounded-sm  bg-slate-300 hover:bg-slate-400" onClick={handleAddPerson}><Plus className=" text-slate-800" /></Button></TabsTrigger>
+
         </TabsList>
         {people.map((person, index) => {
           return <TabsContent key={index} value={index} className="m-0 p-0"><SalaryCalculator personId={person.id} activeTab={index} /></TabsContent>

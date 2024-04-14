@@ -217,7 +217,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     }
   };
 
-  return <div className=" bg-slate-300 rounded-xl p-6 m-0">
+  return <div className=" bg-slate-300 rounded-xl p-6">
     <h2 className="pb-2 text-2xl font-semibold tracking-tight first:mt-0">{name} BÉRÉNEK KISZÁMÍTÁSA</h2>
     <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
       <Label className="font-semibold">Családtag neve</Label>
@@ -231,10 +231,10 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     </div>
     <Slider value={[sliderValue]} max={100} step={1} onValueChange={(e) => sliderChange(e[0])} className="mt-5 mb-5 w-96" />
     <div className='w-96 flex justify-center align-middle gap-2'>
-      <Button className="bg-slate-500" onClick={() => decreaseBBer(1)}>-1%</Button>
-      <Button className="bg-slate-500" onClick={() => decreaseBBer(5)}>-5%</Button>
-      <Button className="bg-slate-500" onClick={() => increaseBBer(1)}>+1%</Button>
-      <Button className="bg-slate-500" onClick={() => increaseBBer(5)}>+5%</Button>
+      <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(1)}>-1%</Button>
+      <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(5)}>-5%</Button>
+      <Button className="bg-slate-600 w-fit p-2" onClick={() => increaseBBer(1)}>+1%</Button>
+      <Button className="bg-slate-600 w-fit p-2" onClick={() => increaseBBer(5)}>+5%</Button>
     </div>
 
     <div className='mt-8'>
@@ -255,7 +255,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
         />
         <Label className='font-semibold'>Friss házasok kedvezménye</Label>
         {marry && <DialogDemo gDate={dateChange} />}
-        {jogosult != null && marry && (jogosult ? <Badge className="bg-green-600 pointer-events-none">Jogosult</Badge> : <Badge className="bg-red-600 pointer-events-none">Nem jogosult</Badge>)}
+        {jogosult != null && marry && (jogosult ? <Badge className="bg-green-600 w-28 justify-center pointer-events-none font-bold">Jogosult</Badge> : <Badge className="bg-red-600 w-28 justify-center pointer-events-none font-bold">Nem jogosult</Badge>)}
       </div>
       <div className="flex items-center space-x-2">
         <Switch
@@ -265,39 +265,43 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
         />
         <Label className='font-semibold' >Személyi adókedvezmény</Label>
       </div>
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="familyDiscount"
-          checked={familyDiscount}
-          onCheckedChange={(checked) => familyDiscountChange(checked)}
-        />
-        <Label className='font-semibold' >Családi kedvezmény</Label>
-        {familyDiscount && <div>
-          <div>
-            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addEltartott() }}>
-              <CirclePlus className="h-full w-full" />
-            </Button>
-            <p>{eltartottak}</p>
+      <div className="flex flex-col">
+        <div className='space-x-2 flex items-center mb-1.5'>
+          <Switch
+            id="familyDiscount"
+            checked={familyDiscount}
+            onCheckedChange={(checked) => familyDiscountChange(checked)}
+          />
+          <Label className='font-semibold m-0 p-0' >Családi kedvezmény</Label>
+        </div>
+        {familyDiscount && <div className='flex items-center'>
+          <div className='flex flex-row items-center gap-1 mr-2'>
             <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseEltartott() }}>
               <CircleMinus className="h-full w-full" />
             </Button>
+            <p>{eltartottak}</p>
+            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addEltartott() }}>
+              <CirclePlus className="h-full w-full" />
+            </Button>
           </div>
           <p>Eltartottak, ebből kedvezményesek</p>
-          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addKedvezmeny() }}>
-            <CirclePlus className="h-full w-full" />
-          </Button>
-          <p>{kedvezmeny}</p>
-          <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseKedvezmeny() }}>
-            <CircleMinus className="h-full w-full" />
-          </Button>
+          <div className='flex flex-row items-center gap-1 ml-2'>
+            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseKedvezmeny() }}>
+              <CircleMinus className="h-full w-full" />
+            </Button>
+            <p>{kedvezmeny}</p>
+            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addKedvezmeny() }}>
+              <CirclePlus className="h-full w-full" />
+            </Button>
+          </div>
         </div>}
       </div>
     </div>
 
     <div className='mt-20 w-full flex flex-col items-center'>
-      <h1 className=' font-semibold font-3xl'>Számított nettó bér</h1>
-      <div className=' bg-slate-600 w-fit p-3 rounded-md m-3'>
-        <p className='font-semibold text-white'>Nettó bér: {NBer} Ft</p>
+      <h1 className=' font-semibold font-2xl'>Számított nettó bér:</h1>
+      <div className='  bg-slate-800 w-fit p-3 rounded-md m-3'>
+        <p className='font-semibold text-white'>{NBer} Ft</p>
       </div>
     </div>
   </div >;

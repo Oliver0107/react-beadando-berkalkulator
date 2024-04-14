@@ -205,41 +205,44 @@ const HouseholdSalaryCalculator = () => {
 
 
   return (
-    <div className="w-[1500px] bg-green-500 p-0">
-      <header>
-        <FamilyMemberTabs
-          people={people}
-          activeTab={activeTab}
-          onAddPerson={addPerson}
-          onTabChange={tabChange}
-        />
-      </header>
-      <main className="grid w-full grid-cols-2 gap-10 p-5">
-        {activeTab >= 0 ? (
-          <SalaryCalculator
-            person={people[activeTab]}
-            cName={updatePersonName}
-            cBBer={updatePersonBBer}
-            cNBer={updatePersonNBer}
-            szjaC={updatePersonSzja}
-            marryC={updatePersonMarry}
-            marryDateC={updatePersonMarryDate}
-            mJogosultC={updatePersonMarryJogosult}
-            taxDiscountC={updatePersonTaxDiscount}
-            familyDiscountC={updatePersonFamilyDiscount}
-            aEltartottak={adjustEltartottak}
-            aKedvezmeny={adjustKedvezmenyNum}
 
-
+    <div className="flex flex-col items-center mt-20">
+      <div className="w-[1500px]">
+        <header>
+          <FamilyMemberTabs
+            people={people}
+            activeTab={activeTab}
+            onAddPerson={addPerson}
+            onTabChange={tabChange}
           />
-        ) : (
-          <div>There is no people in the household</div>
-        )}
-        <HouseholdSummary
-          people={people}
-          setActiveTab={setActiveTab}
-        />
-      </main>
+        </header>
+        <main className="grid w-full grid-cols-2 gap-5 pt-1">
+          {activeTab >= 0 ? (
+            <SalaryCalculator
+              person={people[activeTab]}
+              cName={updatePersonName}
+              cBBer={updatePersonBBer}
+              cNBer={updatePersonNBer}
+              szjaC={updatePersonSzja}
+              marryC={updatePersonMarry}
+              marryDateC={updatePersonMarryDate}
+              mJogosultC={updatePersonMarryJogosult}
+              taxDiscountC={updatePersonTaxDiscount}
+              familyDiscountC={updatePersonFamilyDiscount}
+              aEltartottak={adjustEltartottak}
+              aKedvezmeny={adjustKedvezmenyNum}
+
+
+            />
+          ) : (
+            <div className=" h-[42rem] bg-slate-300 rounded-xl flex justify-center items-center text-3xl font-semibold">Adj hozzá egy családtagot a + gombbal :) </div>
+          )}
+          <HouseholdSummary
+            people={people}
+            setActiveTab={setActiveTab}
+          />
+        </main>
+      </div>
     </div>
   );
 };
