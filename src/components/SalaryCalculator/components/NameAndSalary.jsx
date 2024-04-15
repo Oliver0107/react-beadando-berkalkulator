@@ -11,7 +11,8 @@ const NameAndSalary = ({ person, cName, cBBer, sliderValue, sliderC, dBBer, iBBe
         cName(e);
     }
     const changeBBer = (e) => {
-        cBBer(e.target.value);
+        console.log(e);
+        cBBer(e);
     }
 
     const sliderChange = (e) => {

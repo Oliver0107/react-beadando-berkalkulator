@@ -7,6 +7,12 @@ const HouseholdSalaryCalculator = () => {
   const [people, setPeople] = useState([]);
   const [activeTab, setActiveTab] = useState(-1);
 
+
+
+  const update = () => {
+    [...people]
+  };
+
   const addPerson = (newPerson) => {
     setPeople(prevPeople => {
       const newPeople = [...prevPeople, newPerson];
@@ -142,12 +148,8 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonMarry = (personId, data) => {
     people[personId].marry = data;
-    if (data) {
-      people[personId].NBer += 5000;
-    } else {
+    people[personId].mJogosult = null;
 
-      people[personId].NBer -= 5000;
-    }
   };
 
   const updatePersonMarryDate = (personId, data) => {
@@ -156,6 +158,16 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonMarryJogosult = (personId, data) => {
     people[personId].mJogosult = data;
+
+    if (data == true) {
+
+      people[personId].NBer += 5000;
+
+
+    } else if (data == false) {
+
+      people[personId].NBer -= 5000;
+    }
   };
 
   const updatePersonTaxDiscount = (personId, data) => {
@@ -210,6 +222,7 @@ const HouseholdSalaryCalculator = () => {
         <header>
           <FamilyMemberTabs
             people={people}
+            update={update}
             activeTab={activeTab}
             onAddPerson={addPerson}
             onTabChange={tabChange}

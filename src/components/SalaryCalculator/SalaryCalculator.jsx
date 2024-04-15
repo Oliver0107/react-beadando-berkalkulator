@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NameAndSalary from './components/NameAndSalary';
 import Discounts from './components/Discounts';
 
-const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
+const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny, update }) => {
   if (!person) return null;
 
   const [name, setName] = useState(person.name);
@@ -128,23 +128,20 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     if (differenceInDays < 2 * 365 && differenceInDays > 30) {
       marryC(person.id, true);
       setNBer(person.NBer);
-      setJogosult(true);
-      mJogosultC(person.id, true);
+      jogosultChange(true)
       marryDateC(person.id, e);
     } else {
       if (person.mJogosult == true) {
         marryC(person.id, false);
         setNBer(person.NBer);
-        setJogosult(false);
-        mJogosultC(person.id, false);
+        jogosultChange(false);
         marryDateC(person.id, e);
       } else {
         if (jogosult) {
           marryC(person.id, false);
           setNBer(person.NBer);
         }
-        setJogosult(false);
-        mJogosultC(person.id, false);
+        jogosultChange(false)
       }
 
     }
@@ -155,17 +152,49 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
     setMarry(e);
     marryC(person.id, e);
+
     if (!e) {
       marryDateC(person.id, null);
       if (person.mJogosult == true) {
-        marryC(person.id, e);
+        jogosultChange(person.id, e);
         setNBer(person.NBer);
-
-
       }
-      setJogosult(null);
-      mJogosultC(person.id, null);
+      jogosultChange(person.id, null);
     }
+
+
+    // setMarry(e);
+    // marryC(person.id, e);
+
+    // if (!e) {
+    //   marryDateC(person.id, null);
+    //   if (person.mJogosult == true) {
+    //     jogosultChange(person.id, e);
+    //     setNBer(person.NBer);
+
+
+    //   }
+    //   setJogosult(null);
+    //   mJogosultC(person.id, null);
+    // }
+
+    // jogosultChange(person.id, e);
+
+
+  };
+
+  const jogosultChange = (e) => {
+    if (jogosult == false && e || jogosult == true && !e) {
+      setJogosult(e);
+      mJogosultC(person.id, e);
+      setNBer(person.NBer);
+    }
+    if (e == null) {
+      setJogosult(e);
+      mJogosultC(person.id, e);
+      setNBer(person.NBer);
+    }
+
   };
 
   const taxDiscountChange = (e) => {
@@ -268,7 +297,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     <div className='mt-20 w-full flex flex-col items-center'>
       <h1 className=' font-semibold font-2xl'>Számított nettó bér:</h1>
       <div className='  bg-slate-800 w-fit p-3 rounded-md m-3'>
-        <p className='font-semibold text-white'>{NBer} Ft</p>
+        <p className='font-semibold text-white'>{Math.floor(NBer)} Ft</p>
       </div>
     </div>
   </div >;
