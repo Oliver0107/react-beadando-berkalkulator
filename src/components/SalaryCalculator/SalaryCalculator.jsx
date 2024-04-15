@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Slider } from '../ui/slider';
-import { Button } from '../ui/button';
-import { Switch } from '../ui/switch';
-import { Badge } from '../ui/badge';
-import DialogDemo from './components/DatePickerModal';
-import { CirclePlus, CircleMinus, CaseUpper } from 'lucide-react';
-import { set } from 'date-fns';
 import NameAndSalary from './components/NameAndSalary';
+import Discounts from './components/Discounts';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
   if (!person) return null;
@@ -26,7 +18,6 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
   const [eltartottak, setEltartottak] = useState(person.eltartott);
   const [kedvezmeny, setKedvezmenyNum] = useState(person.kedvezmenyNum);
-
 
 
 
@@ -161,12 +152,12 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   const marryChange = (e) => {
-    setMarry(e);
-    if (!e) {
 
+    setMarry(e);
+    marryC(person.id, e);
+    if (!e) {
       marryDateC(person.id, null);
       if (person.mJogosult == true) {
-        console.log("nem jogosult");
         marryC(person.id, e);
         setNBer(person.NBer);
 
@@ -259,66 +250,20 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
     />
 
-    <div className='mt-8'>
-      <h1 className='font-semibold'>Kedvezmények</h1>
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="szja"
-          checked={szjaMentes}
-          onCheckedChange={(checked) => szjaChange(checked)}
-        />
-        <Label className='font-semibold'>25 év alatt SZJA mentes</Label>
-      </div>
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="marry"
-          checked={marry}
-          onCheckedChange={(checked) => marryChange(checked)}
-        />
-        <Label className='font-semibold'>Friss házasok kedvezménye</Label>
-        {marry && <DialogDemo gDate={dateChange} />}
-        {jogosult != null && marry && (jogosult ? <Badge className="bg-green-600 w-28 justify-center pointer-events-none font-bold">Jogosult</Badge> : <Badge className="bg-red-600 w-28 justify-center pointer-events-none font-bold">Nem jogosult</Badge>)}
-      </div>
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="taxDiscount"
-          checked={taxDiscount}
-          onCheckedChange={(checked) => taxDiscountChange(checked)}
-        />
-        <Label className='font-semibold' >Személyi adókedvezmény</Label>
-      </div>
-      <div className="flex flex-col">
-        <div className='space-x-2 flex items-center mb-1.5'>
-          <Switch
-            id="familyDiscount"
-            checked={familyDiscount}
-            onCheckedChange={(checked) => familyDiscountChange(checked)}
-          />
-          <Label className='font-semibold m-0 p-0' >Családi kedvezmény</Label>
-        </div>
-        {familyDiscount && <div className='flex items-center'>
-          <div className='flex flex-row items-center gap-1 mr-2'>
-            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseEltartott() }}>
-              <CircleMinus className="h-full w-full" />
-            </Button>
-            <p>{eltartottak}</p>
-            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addEltartott() }}>
-              <CirclePlus className="h-full w-full" />
-            </Button>
-          </div>
-          <p>Eltartottak, ebből kedvezményesek</p>
-          <div className='flex flex-row items-center gap-1 ml-2'>
-            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { decreaseKedvezmeny() }}>
-              <CircleMinus className="h-full w-full" />
-            </Button>
-            <p>{kedvezmeny}</p>
-            <Button className="h-5 w-5 rounded-3xl" variant="outline" size="icon" onClick={() => { addKedvezmeny() }}>
-              <CirclePlus className="h-full w-full" />
-            </Button>
-          </div>
-        </div>}
-      </div>
-    </div>
+    <Discounts
+      szjaC={szjaChange}
+      marryC={marryChange}
+      dateC={dateChange}
+      taxDiscountC={taxDiscountChange}
+      familyDiscountC={familyDiscountChange}
+      person={person}
+      aEltartott={addEltartott}
+      dEltartott={decreaseEltartott}
+      aKedvezmeny={addKedvezmeny}
+      dKedvezmeny={decreaseKedvezmeny}
+      jogosult={jogosult}
+
+    />
 
     <div className='mt-20 w-full flex flex-col items-center'>
       <h1 className=' font-semibold font-2xl'>Számított nettó bér:</h1>
