@@ -8,6 +8,7 @@ import { Badge } from '../ui/badge';
 import DialogDemo from './components/DatePickerModal';
 import { CirclePlus, CircleMinus, CaseUpper } from 'lucide-react';
 import { set } from 'date-fns';
+import NameAndSalary from './components/NameAndSalary';
 
 const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny }) => {
   if (!person) return null;
@@ -246,24 +247,17 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   return <div className=" bg-slate-300 rounded-xl p-6">
-    <h2 className="pb-2 text-2xl font-semibold tracking-tight first:mt-0">{name} BÉRÉNEK KISZÁMÍTÁSA</h2>
-    <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
-      <Label className="font-semibold">Családtag neve</Label>
-      <Input label="Név" value={name} onChange={(e) => changeName(e)} />
-      <Label className="text-muted-foreground">Add meg a családtag nevét!</Label>
-    </div>
-    <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label className="font-semibold">Bruttó bér</Label>
-      <Input label="Bér" type="number" min="20000" value={BBer} onChange={(e) => changeBBer(e)} />
-      <Label className="text-muted-foreground">Add meg a bruttó béredet!</Label>
-    </div>
-    <Slider value={[sliderValue]} max={100} step={1} min={4} onValueChange={(e) => sliderChange(e[0])} className="mt-5 mb-5 w-96" />
-    <div className='w-96 flex justify-center align-middle gap-2'>
-      <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(1)}>-1%</Button>
-      <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(5)}>-5%</Button>
-      <Button className="bg-slate-600 w-fit p-2" onClick={() => increaseBBer(1)}>+1%</Button>
-      <Button className="bg-slate-600 w-fit p-2" onClick={() => increaseBBer(5)}>+5%</Button>
-    </div>
+
+    <NameAndSalary
+      person={person}
+      cName={changeName}
+      cBBer={changeBBer}
+      sliderC={sliderChange}
+      sliderValue={sliderValue}
+      dBBer={decreaseBBer}
+      iBBer={increaseBBer}
+
+    />
 
     <div className='mt-8'>
       <h1 className='font-semibold'>Kedvezmények</h1>
