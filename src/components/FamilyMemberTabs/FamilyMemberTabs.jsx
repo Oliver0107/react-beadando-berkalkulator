@@ -16,7 +16,7 @@ const FamilyMemberTabs = ({ people, activeTab, onAddPerson, onTabChange }) => {
     const personData = {
       id: `${pCounter}`,
       name: `${pCounter + 1}. ember`,
-      BBer: 0, NBer: 0,
+      BBer: 20000, NBer: 20000 - (20000 * 0.335),
       szjaMentes: false,
       marry: false, mdate: null, mJogosult: null,
       taxDiscount: false,

@@ -1,15 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+
 import { Button } from "@/components/ui/button";
-import { set } from "date-fns";
 import { useEffect, useState } from "react";
 
 
@@ -48,7 +38,7 @@ const HouseholdSummary = ({ people, setActiveTab }) => {
                   <Button className=" text-md" variant="link" onClick={() => { setActiveTab(row.id) }} >{row["name"]}</Button>
                 </td>
                 <td className="border-2 border-slate-300 bg-slate-100 px-4 py-1 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                  {row["NBer"]} Ft
+                  {Math.floor(row["NBer"])} Ft
                 </td>
               </tr>
             )) : "No data available."}
@@ -57,7 +47,7 @@ const HouseholdSummary = ({ people, setActiveTab }) => {
                 Összesen:
               </td>
               <td className="border-2 border-slate-300 bg-slate-100 px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
-                {totalAmount} Ft
+                {Math.floor(totalAmount)} Ft
               </td>
             </tr>
           </tbody>

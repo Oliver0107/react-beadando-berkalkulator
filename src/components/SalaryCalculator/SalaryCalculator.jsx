@@ -5,7 +5,7 @@ import { Slider } from '../ui/slider';
 import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 import { Badge } from '../ui/badge';
-import DialogDemo from '../DatePickerModal';
+import DialogDemo from './components/DatePickerModal';
 import { CirclePlus, CircleMinus, CaseUpper } from 'lucide-react';
 import { set } from 'date-fns';
 
@@ -45,11 +45,36 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
   }, [person]);
 
+  const zero = () => {
+    setSzjaMentes(false);
+    setMarry(false);
+    setDate(null);
+    setJogosult(null);
+    setTaxDiscount(false);
+    setFamilyDiscount(false);
+    setEltartottak(0);
+    setKedvezmenyNum(0);
+
+    szjaC(person.id, false);
+    marryC(person.id, false);
+    marryDateC(person.id, null);
+    mJogosultC(person.id, null);
+    taxDiscountC(person.id, false);
+    familyDiscountC(person.id, false);
+
+
+
+
+  }
+
   const changeName = (e) => {
     setName(e.target.value);
     cName(person.id, e.target.value);
   };
   const changeBBer = (e) => {
+
+    zero();
+
     setBBer(Math.floor(e.target.value));
     setNBer(Math.floor(e.target.value) - (Math.floor(e.target.value) * 0.335));
 
@@ -60,6 +85,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   const sliderChange = (e) => {
+    zero();
     setSliderValue(e);
 
     setBBer(e * 5000);
@@ -70,6 +96,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   const increaseBBer = (percentage) => {
+    zero();
     setBBer((currentBBer) => {
       const newBBer = currentBBer * (1 + percentage / 100);
       setNBer(Math.round(newBBer - (newBBer * 0.335)));
@@ -81,6 +108,7 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   const decreaseBBer = (percentage) => {
+    zero();
     setBBer((currentBBer) => {
       const newBBer = currentBBer * (1 - percentage / 100);
       setNBer(Math.round(newBBer - (newBBer * 0.335)));
@@ -226,10 +254,10 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     </div>
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label className="font-semibold">Bruttó bér</Label>
-      <Input label="Bér" type="number" min="0" value={BBer} onChange={(e) => changeBBer(e)} />
+      <Input label="Bér" type="number" min="20000" value={BBer} onChange={(e) => changeBBer(e)} />
       <Label className="text-muted-foreground">Add meg a bruttó béredet!</Label>
     </div>
-    <Slider value={[sliderValue]} max={100} step={1} onValueChange={(e) => sliderChange(e[0])} className="mt-5 mb-5 w-96" />
+    <Slider value={[sliderValue]} max={100} step={1} min={4} onValueChange={(e) => sliderChange(e[0])} className="mt-5 mb-5 w-96" />
     <div className='w-96 flex justify-center align-middle gap-2'>
       <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(1)}>-1%</Button>
       <Button className="bg-slate-600 w-fit p-2" onClick={() => decreaseBBer(5)}>-5%</Button>
