@@ -49,9 +49,6 @@ const HouseholdSalaryCalculator = () => {
         people[personId].NBer = Math.floor(people[personId].BBer - (people[personId].BBer * 0.185));
         people[personId].NBer += Math.floor((people[personId].BBer - 499952) * 0.15);
       }
-      console.log(people[personId].familyDiscount);
-      console.log(people[personId].eltartott);
-      console.log(people[personId].kedvezmenyNum);
 
       if (people[personId].familyDiscount) {
         const kedvezmenyErtekek = {
@@ -148,7 +145,13 @@ const HouseholdSalaryCalculator = () => {
 
   const updatePersonMarry = (personId, data) => {
     people[personId].marry = data;
-    people[personId].mJogosult = null;
+    if (data == false) {
+      if (people[personId].mJogosult == true) {
+        people[personId].NBer -= 5000;
+      }
+      people[personId].mJogosult = null;
+    }
+    setPeople([...people]);
 
   };
 
@@ -157,17 +160,22 @@ const HouseholdSalaryCalculator = () => {
   };
 
   const updatePersonMarryJogosult = (personId, data) => {
-    people[personId].mJogosult = data;
 
-    if (data == true) {
-
-      people[personId].NBer += 5000;
-
-
-    } else if (data == false) {
-
-      people[personId].NBer -= 5000;
+    if (people[personId].mJogosult == null) {
+      people[personId].mJogosult = data;
+      if (data == true) {
+        people[personId].NBer += 5000;
+      }
+    } else if (people[personId].mJogosult != data) {
+      people[personId].mJogosult = data;
+      if (data == true) {
+        people[personId].NBer += 5000;
+      } else if (data == false) {
+        people[personId].NBer -= 5000;
+      }
     }
+    setPeople([...people]);
+
   };
 
   const updatePersonTaxDiscount = (personId, data) => {

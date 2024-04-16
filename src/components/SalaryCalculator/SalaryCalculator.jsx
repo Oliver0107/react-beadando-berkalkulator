@@ -126,26 +126,22 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
 
     if (differenceInDays < 2 * 365 && differenceInDays > 30) {
-      marryC(person.id, true);
-      setNBer(person.NBer);
       jogosultChange(true)
+      setNBer(person.NBer);
       marryDateC(person.id, e);
     } else {
       if (person.mJogosult == true) {
-        marryC(person.id, false);
-        setNBer(person.NBer);
         jogosultChange(false);
+        setNBer(person.NBer);
         marryDateC(person.id, e);
-      } else {
-        if (jogosult) {
-          marryC(person.id, false);
+      }
+      else {
+        if (person.mJogosult == null) { //az első választáskor
+          jogosultChange(false)
           setNBer(person.NBer);
         }
-        jogosultChange(false)
       }
-
     }
-
   };
 
   const marryChange = (e) => {
@@ -155,46 +151,18 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
     if (!e) {
       marryDateC(person.id, null);
-      if (person.mJogosult == true) {
-        jogosultChange(person.id, e);
-        setNBer(person.NBer);
-      }
-      jogosultChange(person.id, null);
+      setJogosult(null);
     }
-
-
-    // setMarry(e);
-    // marryC(person.id, e);
-
-    // if (!e) {
-    //   marryDateC(person.id, null);
-    //   if (person.mJogosult == true) {
-    //     jogosultChange(person.id, e);
-    //     setNBer(person.NBer);
-
-
-    //   }
-    //   setJogosult(null);
-    //   mJogosultC(person.id, null);
-    // }
-
-    // jogosultChange(person.id, e);
-
+    setNBer(person.NBer);
 
   };
 
   const jogosultChange = (e) => {
-    if (jogosult == false && e || jogosult == true && !e) {
-      setJogosult(e);
-      mJogosultC(person.id, e);
-      setNBer(person.NBer);
-    }
-    if (e == null) {
-      setJogosult(e);
-      mJogosultC(person.id, e);
-      setNBer(person.NBer);
-    }
-
+    console.log(jogosult)
+    setJogosult(e);
+    mJogosultC(person.id, e);
+    setNBer(person.NBer);
+    console.log(jogosult)
   };
 
   const taxDiscountChange = (e) => {
