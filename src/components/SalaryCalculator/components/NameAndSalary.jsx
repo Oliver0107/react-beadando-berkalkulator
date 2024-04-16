@@ -30,7 +30,7 @@ const NameAndSalary = ({ person, cName, cBBer, sliderValue, sliderC, dBBer, iBBe
 
     return (
         <>
-            <h2 className="pb-2 text-2xl font-semibold tracking-tight first:mt-0">{name} BÉRÉNEK KISZÁMÍTÁSA</h2>
+            <h2 className="pb-2 text-2xl font-semibold tracking-tight first:mt-0">{name.toUpperCase()} BÉRÉNEK KISZÁMÍTÁSA</h2>
             <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
                 <Label className="font-semibold">Családtag neve</Label>
                 <Input label="Név" value={name} onChange={(e) => changeName(e)} />

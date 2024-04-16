@@ -51,7 +51,7 @@ const Discounts = ({ person, szjaC, dateC, marryC, taxDiscountC, familyDiscountC
 
     return (
         <div className='mt-8'>
-            <h1 className='font-semibold'>Kedvezmények</h1>
+            <h1 className='font-semibold text-xl mb-2'>Kedvezmények</h1>
             <div className="flex items-center space-x-2">
                 <Switch
                     id="szja"
