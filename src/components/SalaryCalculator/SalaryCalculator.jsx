@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import NameAndSalary from './components/NameAndSalary';
 import Discounts from './components/Discounts';
+import Delete from './components/Delete';
 
-const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, dEltartottak, aKedvezmeny, dKedvezmeny, update }) => {
+const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDateC, mJogosultC, taxDiscountC, familyDiscountC, aEltartottak, aKedvezmeny, deletePerson, activeTab }) => {
   if (!person) return null;
 
   const [name, setName] = useState(person.name);
@@ -18,7 +19,6 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
 
   const [eltartottak, setEltartottak] = useState(person.eltartott);
   const [kedvezmeny, setKedvezmenyNum] = useState(person.kedvezmenyNum);
-
 
 
   useEffect(() => {
@@ -54,15 +54,15 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
     taxDiscountC(person.id, false);
     familyDiscountC(person.id, false);
 
-
-
-
   }
 
   const changeName = (e) => {
     setName(e.target.value);
     cName(person.id, e.target.value);
   };
+  // const dPeople = () => {
+  //   deletePerson(activeTab);
+  // }
   const changeBBer = (e) => {
 
     zero();
@@ -235,6 +235,8 @@ const SalaryCalculator = ({ person, cName, cBBer, cNBer, szjaC, marryC, marryDat
   };
 
   return <div className=" bg-slate-300 rounded-xl p-6">
+
+    {/* <Delete people={person} delPeople={dPeople} /> */}
 
     <NameAndSalary
       person={person}

@@ -22,6 +22,26 @@ const HouseholdSalaryCalculator = () => {
 
   };
 
+  // const deletePerson = (personId) => {
+  //   console.log(personId)
+
+  //   let newPeople = people.filter((person) => person.id != personId);
+
+  //   console.log(newPeople)
+
+  //   if (newPeople.length > 0) {
+  //     let counter = 1;
+  //     const peopleWithNewIds = newPeople.map((person, index) => ({ ...person, id: index }));
+  //     setActiveTab(0);
+  //     setPeople([peopleWithNewIds]);
+  //   } else {
+  //     setActiveTab(-1);
+  //     setPeople([]);
+  //   }
+
+  //   console.log(people)
+  // };
+
   const tabChange = (tabIndex) => {
     setActiveTab(tabIndex);
   };
@@ -240,6 +260,7 @@ const HouseholdSalaryCalculator = () => {
           {activeTab >= 0 ? (
             <SalaryCalculator
               person={people[activeTab]}
+              // deletePerson={deletePerson}
               cName={updatePersonName}
               cBBer={updatePersonBBer}
               cNBer={updatePersonNBer}
@@ -251,6 +272,7 @@ const HouseholdSalaryCalculator = () => {
               familyDiscountC={updatePersonFamilyDiscount}
               aEltartottak={adjustEltartottak}
               aKedvezmeny={adjustKedvezmenyNum}
+              activeTab={activeTab}
 
 
             />
